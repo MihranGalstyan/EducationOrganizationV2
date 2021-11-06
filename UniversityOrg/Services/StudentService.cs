@@ -1,62 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UniversityOrg.Models;
 
 namespace UniversityOrg.Services
 {
     public class StudentService
     {
-        private static List<Student> _students = new List<Student>();
+        /// <summary>
+        /// All students list
+        /// </summary>
+        private static List<Student> _studentsAll = new List<Student>();
+
+        /// <summary>
+        /// Adds given student to the list
+        /// </summary>
+        /// <param name="student">Given student</param>
         public void Add(Student student)
         {
-            _students.Add(student);
+            _studentsAll.Add(student);
         }
 
+        /// <summary>
+        /// Finds student by given id
+        /// </summary>
+        /// <param name="id">Given id</param>
+        /// <returns>Object</returns>
         public Student Get(Guid id)
         {
-            for (int i = 0; i < _students.Count; i++)
+            for (int i = 0; i < _studentsAll.Count; i++)
             {
-                if (_students[i]._id == id)
-                    return _students[i];
+                if (GetId(_studentsAll[i]) == id)
+                    return _studentsAll[i];
             }
             return default(Student);
         }
 
+        /// <summary>
+        /// Finds all studens of teacher by given id
+        /// </summary>
+        /// <param name="id">Given id</param>
+        /// <returns>List</returns>
         public List<Student> GetAllByTeacher(Guid id)
         {
             List<Student> stList = new List<Student>();
-            for (int i = 0; i < _students.Count; i++)
+            for (int i = 0; i < _studentsAll.Count; i++)
             {
-                if (_students[i]._teacher._id == id)
+
+                if (_studentsAll[i]._teacher.GetId() == id)
                 {
-                    stList.Add(_students[i]);
+                    stList.Add(_studentsAll[i]);
                 }
             }
             return stList;
         }
 
+        /// <summary>
+        /// Returns all students list
+        /// </summary>
+        /// <returns>List</returns>
         public List<Student> GetAll()
         {
-            return _students;
+            return _studentsAll;
         }
 
+        /// <summary>
+        /// Removes given student from all students list
+        /// </summary>
+        /// <param name="student">Given student</param>
         public void Remove(Student student)
         {
-            _students.Remove(student);
+            _studentsAll.Remove(student);
         }
 
+        /// <summary>
+        /// Finds student by id in all students list and replaces with given student
+        /// </summary>
+        /// <param name="student">Given student</param>
         public void Update(Student student)
         {
-            for (int i = 0; i < _students.Count; i++)
+            for (int i = 0; i < _studentsAll.Count; i++)
             {
-                if (_students[i]._id == student._id)
+                if (GetId(_studentsAll[i]) == GetId(student))
                 {
-                    _students[i] = student;
+                    _studentsAll[i] = student;
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets value of private Id
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns>Guid value</returns>
+        public Guid GetId(Student student)
+        {
+            return student.GetId();
+        }
+
+        /// <summary>
+        /// Prints profile of given student
+        /// </summary>
+        /// <param name="student">Given student</param>
+        public void GetProfile(Student student)
+        {
+            student.GetProfile();
+        }
+
+        /// <summary>
+        /// (Setter) Updates all students list
+        /// </summary>
+        /// <param name="students">Given list</param>
+        public void UpdateStudentsList(List<Student> students)
+        {
+            _studentsAll = students;
         }
     }
 }
